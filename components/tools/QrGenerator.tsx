@@ -9,20 +9,27 @@ export default function QrGenerator() {
   const [fgColor, setFgColor] = useState("#000000");
   const [bgColor, setBgColor] = useState("#ffffff");
   const [qrUrl, setQrUrl] = useState("");
+  const [svgUrl, setSvgUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const svgUrlRef = useRef("");
 
   const generateQr = useCallback(async () => {
     if (!text.trim() || !canvasRef.current) return;
     setLoading(true);
     try {
       const QRCode = (await import("qrcode")).default;
-      await QRCode.toCanvas(canvasRef.current, text, {
-        width: size,
-        color: { dark: fgColor, light: bgColor },
-        margin: 2,
-      });
+      const opts = { color: { dark: fgColor, light: bgColor }, margin: 2 };
+
+      await QRCode.toCanvas(canvasRef.current, text, { ...opts, width: size });
       setQrUrl(canvasRef.current.toDataURL("image/png"));
+
+      const svgString = await QRCode.toString(text, { ...opts, type: "svg" });
+      if (svgUrlRef.current) URL.revokeObjectURL(svgUrlRef.current);
+      const blob = new Blob([svgString], { type: "image/svg+xml" });
+      const url = URL.createObjectURL(blob);
+      svgUrlRef.current = url;
+      setSvgUrl(url);
     } catch (e) {
       console.error(e);
     }
@@ -82,16 +89,30 @@ export default function QrGenerator() {
       <div className="card flex flex-col items-center gap-4">
         <canvas ref={canvasRef} width={size} height={size} className="rounded-lg border border-[var(--border)]" />
         {qrUrl && (
-          <a
-            href={canvasRef.current?.toDataURL("image/png") ?? qrUrl}
-            download="qrcode.png"
-            className="btn-primary"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" x2="12" y1="15" y2="3" />
-            </svg>
-            Download PNG
-          </a>
+          <div className="flex items-center gap-3 flex-wrap justify-center">
+            <a
+              href={canvasRef.current?.toDataURL("image/png") ?? qrUrl}
+              download="qrcode.png"
+              className="btn-primary"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" x2="12" y1="15" y2="3" />
+              </svg>
+              Download PNG
+            </a>
+            {svgUrl && (
+              <a
+                href={svgUrl}
+                download="qrcode.svg"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-[var(--border)] bg-[var(--surface)] hover:bg-[var(--background)] text-[var(--foreground)] text-sm font-semibold transition-colors"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" x2="12" y1="15" y2="3" />
+                </svg>
+                Download SVG
+              </a>
+            )}
+          </div>
         )}
       </div>
     </div>
