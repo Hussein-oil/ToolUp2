@@ -1,0 +1,87 @@
+{
+  "nav": {
+    "home": "Home",
+    "tools": "Tools",
+    "blog": "Blog",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Free Online Tools — Fast & Private",
+    "subtitle": "All tools work locally on your device. No uploads, no tracking.",
+    "searchPlaceholder": "Search tools..."
+  },
+  "tools": {
+    "title": "All Tools",
+    "useTool": "Use Tool",
+    "imageCompressor": {
+      "name": "Bulk Image Compressor",
+      "description": "Compress multiple images at once. Reduce file size without losing quality."
+    },
+    "imageResizer": {
+      "name": "Image Resizer",
+      "description": "Resize images to any dimension. Lock aspect ratio for perfect results."
+    },
+    "watermarkAdder": {
+      "name": "Watermark Adder",
+      "description": "Add custom text watermarks to your images with full control."
+    },
+    "wordCounter": {
+      "name": "Word Counter",
+      "description": "Count words, characters, sentences, and estimate reading time."
+    },
+    "jsonFormatter": {
+      "name": "JSON Formatter",
+      "description": "Format, validate, and minify JSON data instantly."
+    },
+    "qrGenerator": {
+      "name": "QR Code Generator",
+      "description": "Generate custom QR codes for any URL or text."
+    },
+    "passwordGenerator": {
+      "name": "Password Generator",
+      "description": "Create strong, secure passwords with customizable options."
+    }
+  },
+  "features": {
+    "free": {
+      "title": "100% Free",
+      "description": "All tools are completely free to use, forever. No hidden fees."
+    },
+    "local": {
+      "title": "Works Locally",
+      "description": "Your files never leave your device. All processing happens in your browser."
+    },
+    "noReg": {
+      "title": "No Registration",
+      "description": "No account needed. Just open the tool and start working."
+    }
+  },
+  "footer": {
+    "copyright": "© 2025 Toolup. All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "contact": "Contact",
+    "blog": "Blog",
+    "email": "toolup.support@gmail.com"
+  },
+  "breadcrumb": {
+    "home": "Home",
+    "tools": "Tools"
+  },
+  "common": {
+    "download": "Download",
+    "downloadAll": "Download All (ZIP)",
+    "copy": "Copy",
+    "clear": "Clear",
+    "generate": "Generate",
+    "preview": "Preview",
+    "upload": "Upload",
+    "dragDrop": "Drag & drop files here, or click to browse",
+    "processing": "Processing...",
+    "success": "Done!",
+    "relatedTools": "Related Tools",
+    "howToUse": "How to Use",
+    "faq": "Frequently Asked Questions"
+  }
+}

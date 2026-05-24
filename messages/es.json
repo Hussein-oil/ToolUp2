@@ -1,0 +1,87 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "tools": "Herramientas",
+    "blog": "Blog",
+    "about": "Acerca de",
+    "contact": "Contacto"
+  },
+  "hero": {
+    "title": "Herramientas en línea gratuitas — Rápidas y privadas",
+    "subtitle": "Todas las herramientas funcionan localmente en tu dispositivo. Sin subidas, sin rastreo.",
+    "searchPlaceholder": "Buscar herramientas..."
+  },
+  "tools": {
+    "title": "Todas las herramientas",
+    "useTool": "Usar herramienta",
+    "imageCompressor": {
+      "name": "Compresor de imágenes masivo",
+      "description": "Comprime múltiples imágenes a la vez. Reduce el tamaño sin perder calidad."
+    },
+    "imageResizer": {
+      "name": "Redimensionador de imágenes",
+      "description": "Redimensiona imágenes a cualquier dimensión. Bloquea la proporción para resultados perfectos."
+    },
+    "watermarkAdder": {
+      "name": "Añadir marca de agua",
+      "description": "Añade marcas de agua de texto personalizadas a tus imágenes con control total."
+    },
+    "wordCounter": {
+      "name": "Contador de palabras",
+      "description": "Cuenta palabras, caracteres, oraciones y estima el tiempo de lectura."
+    },
+    "jsonFormatter": {
+      "name": "Formateador JSON",
+      "description": "Formatea, valida y minifica datos JSON al instante."
+    },
+    "qrGenerator": {
+      "name": "Generador de código QR",
+      "description": "Genera códigos QR personalizados para cualquier URL o texto."
+    },
+    "passwordGenerator": {
+      "name": "Generador de contraseñas",
+      "description": "Crea contraseñas fuertes y seguras con opciones personalizables."
+    }
+  },
+  "features": {
+    "free": {
+      "title": "100% Gratuito",
+      "description": "Todas las herramientas son completamente gratuitas para siempre. Sin tarifas ocultas."
+    },
+    "local": {
+      "title": "Funciona localmente",
+      "description": "Tus archivos nunca salen de tu dispositivo. Todo el procesamiento ocurre en tu navegador."
+    },
+    "noReg": {
+      "title": "Sin registro",
+      "description": "No se necesita cuenta. Simplemente abre la herramienta y empieza a trabajar."
+    }
+  },
+  "footer": {
+    "copyright": "© 2025 Toolup. Todos los derechos reservados.",
+    "privacyPolicy": "Política de privacidad",
+    "termsOfService": "Términos de servicio",
+    "contact": "Contacto",
+    "blog": "Blog",
+    "email": "toolup.support@gmail.com"
+  },
+  "breadcrumb": {
+    "home": "Inicio",
+    "tools": "Herramientas"
+  },
+  "common": {
+    "download": "Descargar",
+    "downloadAll": "Descargar todo (ZIP)",
+    "copy": "Copiar",
+    "clear": "Limpiar",
+    "generate": "Generar",
+    "preview": "Vista previa",
+    "upload": "Subir",
+    "dragDrop": "Arrastra y suelta archivos aquí, o haz clic para explorar",
+    "processing": "Procesando...",
+    "success": "¡Listo!",
+    "relatedTools": "Herramientas relacionadas",
+    "howToUse": "Cómo usar",
+    "faq": "Preguntas frecuentes"
+  }
+}

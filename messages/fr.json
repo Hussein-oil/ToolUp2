@@ -1,0 +1,87 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "tools": "Outils",
+    "blog": "Blog",
+    "about": "À propos",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Outils en ligne gratuits — Rapides et privés",
+    "subtitle": "Tous les outils fonctionnent localement sur votre appareil. Pas de téléchargements, pas de suivi.",
+    "searchPlaceholder": "Rechercher des outils..."
+  },
+  "tools": {
+    "title": "Tous les outils",
+    "useTool": "Utiliser l'outil",
+    "imageCompressor": {
+      "name": "Compresseur d'images en masse",
+      "description": "Compressez plusieurs images à la fois. Réduisez la taille du fichier sans perte de qualité."
+    },
+    "imageResizer": {
+      "name": "Redimensionneur d'image",
+      "description": "Redimensionnez les images à n'importe quelle dimension. Verrouillez le ratio pour des résultats parfaits."
+    },
+    "watermarkAdder": {
+      "name": "Ajout de filigrane",
+      "description": "Ajoutez des filigranes textuels personnalisés à vos images avec un contrôle total."
+    },
+    "wordCounter": {
+      "name": "Compteur de mots",
+      "description": "Comptez les mots, caractères, phrases et estimez le temps de lecture."
+    },
+    "jsonFormatter": {
+      "name": "Formateur JSON",
+      "description": "Formatez, validez et minifiez les données JSON instantanément."
+    },
+    "qrGenerator": {
+      "name": "Générateur de code QR",
+      "description": "Générez des codes QR personnalisés pour n'importe quelle URL ou texte."
+    },
+    "passwordGenerator": {
+      "name": "Générateur de mot de passe",
+      "description": "Créez des mots de passe forts et sécurisés avec des options personnalisables."
+    }
+  },
+  "features": {
+    "free": {
+      "title": "100% Gratuit",
+      "description": "Tous les outils sont entièrement gratuits, pour toujours. Pas de frais cachés."
+    },
+    "local": {
+      "title": "Fonctionne localement",
+      "description": "Vos fichiers ne quittent jamais votre appareil. Tout le traitement se fait dans votre navigateur."
+    },
+    "noReg": {
+      "title": "Sans inscription",
+      "description": "Pas de compte nécessaire. Ouvrez simplement l'outil et commencez à travailler."
+    }
+  },
+  "footer": {
+    "copyright": "© 2025 Toolup. Tous droits réservés.",
+    "privacyPolicy": "Politique de confidentialité",
+    "termsOfService": "Conditions d'utilisation",
+    "contact": "Contact",
+    "blog": "Blog",
+    "email": "toolup.support@gmail.com"
+  },
+  "breadcrumb": {
+    "home": "Accueil",
+    "tools": "Outils"
+  },
+  "common": {
+    "download": "Télécharger",
+    "downloadAll": "Tout télécharger (ZIP)",
+    "copy": "Copier",
+    "clear": "Effacer",
+    "generate": "Générer",
+    "preview": "Aperçu",
+    "upload": "Téléverser",
+    "dragDrop": "Glissez-déposez des fichiers ici, ou cliquez pour parcourir",
+    "processing": "Traitement...",
+    "success": "Terminé!",
+    "relatedTools": "Outils associés",
+    "howToUse": "Comment utiliser",
+    "faq": "Questions fréquentes"
+  }
+}
