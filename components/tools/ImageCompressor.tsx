@@ -17,8 +17,13 @@ interface Progress {
   total: number;
 }
 
-const BATCH_SIZE = 10;
-const ACCEPTED = ["image/jpeg", "image/png", "image/webp"];
+const BATCH_SIZE = 5;
+const ACCEPTED_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
+const ACCEPTED_EXT = /\.(jpe?g|png|webp)$/i;
+
+function isImage(file: File) {
+  return ACCEPTED_TYPES.has(file.type) || ACCEPTED_EXT.test(file.name);
+}
 
 function formatBytes(bytes: number) {
   if (bytes < 1024) return bytes + " B";
@@ -30,32 +35,36 @@ function yieldToMain(): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, 0));
 }
 
-function compressImage(file: File, q: number): Promise<CompressedFile> {
-  return new Promise((resolve) => {
-    const img = new Image();
-    const url = URL.createObjectURL(file);
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = img.width;
-      canvas.height = img.height;
-      const ctx = canvas.getContext("2d")!;
-      ctx.drawImage(img, 0, 0);
-      canvas.toBlob(
-        (blob) => {
-          resolve({
-            name: file.name,
-            originalSize: file.size,
-            compressedSize: blob!.size,
-            originalUrl: url,
-            compressedUrl: URL.createObjectURL(blob!),
-            savings: Math.round((1 - blob!.size / file.size) * 100),
-          });
-        },
-        "image/jpeg",
-        q / 100
-      );
-    };
-    img.src = url;
+// createImageBitmap returns a real Promise that rejects on bad input —
+// unlike new Image()+onload which can silently hang if onerror fires.
+async function compressImage(file: File, quality: number): Promise<CompressedFile> {
+  const bitmap = await createImageBitmap(file);
+
+  const canvas = document.createElement("canvas");
+  canvas.width = bitmap.width;
+  canvas.height = bitmap.height;
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Canvas 2D context unavailable");
+  ctx.drawImage(bitmap, 0, 0);
+  bitmap.close();
+
+  return new Promise<CompressedFile>((resolve, reject) => {
+    canvas.toBlob(
+      (blob) => {
+        if (!blob) { reject(new Error(`toBlob returned null for ${file.name}`)); return; }
+        resolve({
+          name: file.name,
+          originalSize: file.size,
+          compressedSize: blob.size,
+          originalUrl: URL.createObjectURL(file),
+          compressedUrl: URL.createObjectURL(blob),
+          savings: Math.round((1 - blob.size / file.size) * 100),
+        });
+      },
+      "image/webp",
+      quality / 100
+    );
   });
 }
 
@@ -78,20 +87,31 @@ export default function ImageCompressor() {
 
   const processFiles = useCallback(
     async (fileList: FileList) => {
-      const imageFiles = Array.from(fileList).filter((f) =>
-        ACCEPTED.includes(f.type)
-      );
+      const imageFiles = Array.from(fileList).filter(isImage);
       if (imageFiles.length === 0) return;
 
       const total = imageFiles.length;
+      // Clear previous results and show progress immediately
+      setFiles([]);
       setProgress({ done: 0, total });
-      setFolderInfo(null);
 
+      let done = 0;
       for (let i = 0; i < imageFiles.length; i += BATCH_SIZE) {
         const batch = imageFiles.slice(i, i + BATCH_SIZE);
-        const results = await Promise.all(batch.map((f) => compressImage(f, quality)));
-        setFiles((prev) => [...prev, ...results]);
-        setProgress({ done: Math.min(i + BATCH_SIZE, total), total });
+
+        // allSettled: a corrupt/unsupported image never blocks the rest of the batch
+        const settled = await Promise.allSettled(
+          batch.map((f) => compressImage(f, quality))
+        );
+        const successes = settled
+          .filter((r): r is PromiseFulfilledResult<CompressedFile> => r.status === "fulfilled")
+          .map((r) => r.value);
+
+        done = Math.min(done + batch.length, total);
+        if (successes.length > 0) setFiles((prev) => [...prev, ...successes]);
+        setProgress({ done, total });
+
+        // Let React repaint the progress bar before next batch
         await yieldToMain();
       }
 
@@ -100,14 +120,23 @@ export default function ImageCompressor() {
     [quality]
   );
 
+  const handleFilesChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (!e.target.files?.length) return;
+      setFolderInfo(null);
+      processFiles(e.target.files);
+      e.target.value = ""; // allow re-selecting the same files
+    },
+    [processFiles]
+  );
+
   const handleFolderChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (!e.target.files) return;
-      const imageFiles = Array.from(e.target.files).filter((f) =>
-        ACCEPTED.includes(f.type)
-      );
-      setFolderInfo(`Found ${imageFiles.length} image${imageFiles.length !== 1 ? "s" : ""} in folder`);
+      if (!e.target.files?.length) return;
+      const count = Array.from(e.target.files).filter(isImage).length;
+      setFolderInfo(`Found ${count} image${count !== 1 ? "s" : ""} in folder`);
       processFiles(e.target.files);
+      e.target.value = "";
     },
     [processFiles]
   );
@@ -244,12 +273,7 @@ export default function ImageCompressor() {
           accept="image/jpeg,image/png,image/webp"
           multiple
           className="hidden"
-          onChange={(e) => {
-            if (e.target.files) {
-              setFolderInfo(null);
-              processFiles(e.target.files);
-            }
-          }}
+          onChange={handleFilesChange}
         />
         {/* webkitdirectory set via useEffect ref — not a valid React prop */}
         <input
