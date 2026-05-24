@@ -6,7 +6,6 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import CursorGlow from "@/components/ui/CursorGlow";
 
 type Props = {
   children: React.ReactNode;
@@ -48,7 +47,6 @@ export default async function LocaleLayout({ children, params }: Props) {
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <NextIntlClientProvider messages={messages}>
-            <CursorGlow />
             <div className="flex flex-col min-h-screen">
               <Header />
               <main className="flex-1">{children}</main>

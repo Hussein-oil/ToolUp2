@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Button from "@/components/ui/Button";
 
 export default function QrGenerator() {
-  const [text, setText] = useState("https://toolup.com");
+  const [text, setText] = useState("https://tool-up2.vercel.app");
   const [size, setSize] = useState(256);
   const [fgColor, setFgColor] = useState("#000000");
   const [bgColor, setBgColor] = useState("#ffffff");
@@ -12,7 +12,7 @@ export default function QrGenerator() {
   const [loading, setLoading] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  async function generateQr() {
+  const generateQr = useCallback(async () => {
     if (!text.trim() || !canvasRef.current) return;
     setLoading(true);
     try {
@@ -27,9 +27,14 @@ export default function QrGenerator() {
       console.error(e);
     }
     setLoading(false);
-  }
+  }, [text, size, fgColor, bgColor]);
 
-  useEffect(() => { generateQr(); }, []);
+  // Regenerate whenever any config value changes.
+  // Debounce text input so we don't generate on every keystroke.
+  useEffect(() => {
+    const id = setTimeout(generateQr, 300);
+    return () => clearTimeout(id);
+  }, [generateQr]);
 
   return (
     <div className="space-y-6">
@@ -77,7 +82,11 @@ export default function QrGenerator() {
       <div className="card flex flex-col items-center gap-4">
         <canvas ref={canvasRef} width={size} height={size} className="rounded-lg border border-[var(--border)]" />
         {qrUrl && (
-          <a href={qrUrl} download="qrcode.png" className="btn-primary">
+          <a
+            href={canvasRef.current?.toDataURL("image/png") ?? qrUrl}
+            download="qrcode.png"
+            className="btn-primary"
+          >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" x2="12" y1="15" y2="3" />
             </svg>
